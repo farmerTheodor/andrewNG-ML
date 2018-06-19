@@ -70,20 +70,25 @@ delta2 = 0;
 delta1 = 0;
 
 for i = 1:m
-  y(i)
-  a3(i)
-  size(a3(i));
-  error3 = a3(i) - y(i);
-  sigmoidGradient(Theta2*a2(i));
-  error2 = (Theta2*error3).*sigmoidGradient(Theta2*a2(i));
-  delta2 = delta2 + error3*(a2(i))
-  delta1 = delta1 + error2*(a1(i))
+  error3 = a3(i, 1:end)-y(i, 1:end);
+  size(error3)
+  pooled = (error3*Theta2);
+  size(a1(i, 1:end))
+  size(Theta1)
+  sigGrad = sigmoidGradient(a1(i, 1:end)*Theta1');
+  size(sigGrad)
+  size(pooled)
+  error2 = pooled.*sigGrad';
+  size(error2)
+  delta1 = delta1 + error2*a1(i, 1:end)
+  delta2 = delta2 + error3*a2(i, 1:end)
+  
     
   
 endfor
-delta1 = delta1(:,2:end);
+delta1 = delta1;
 size(delta1);
-delta2 = delta2(:,2:end);
+delta2 = delta2;
 size(delta2);
 Theta1_grad = delta1/m;
 Theta2_grad = delta2/m;
